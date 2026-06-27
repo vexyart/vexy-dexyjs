@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "vexy-dexyjs — page to slides",
+  "version": "1.0.0",
+  "description": "Convert the current page into reveal.js-compatible slides in place, using vexy-dexyjs.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Convert page to slides"
+  },
+  "icons": {}
+}

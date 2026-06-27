@@ -1,0 +1,61 @@
+{
+  "name": "vexy-dexyjs",
+  "version": "1.0.0",
+  "description": "Browser DOM preprocessor that converts any web page into reveal.js-compatible slides. A generalized successor to webflow2revealjs.",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "browser": "dist/vexy-dexyjs.global.min.js",
+  "unpkg": "dist/vexy-dexyjs.global.min.js",
+  "jsdelivr": "dist/vexy-dexyjs.global.min.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "build:esm": "esbuild src/index.js --bundle --format=esm --outfile=dist/index.mjs",
+    "build:cjs": "esbuild src/index.js --bundle --format=cjs --outfile=dist/index.cjs",
+    "build:iife": "esbuild src/index.js --bundle --format=iife --global-name=VexyDexy --outfile=dist/vexy-dexyjs.global.js",
+    "build:cdn": "esbuild src/index.js --bundle --minify --format=iife --global-name=VexyDexy --outfile=dist/vexy-dexyjs.global.min.js",
+    "build:py": "esbuild src/index.js --bundle --minify --format=iife --global-name=VexyDexy --outfile=../vexy-dexypy/src/vexy_dexypy/assets/vexy-dexyjs.js",
+    "build:ext": "esbuild src/index.js --bundle --minify --format=iife --global-name=VexyDexy --outfile=extension/vexy-dexyjs.global.min.js",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:iife && npm run build:cdn && npm run build:py && npm run build:ext",
+    "test": "node test/smoke.mjs",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "reveal.js",
+    "slides",
+    "presentation",
+    "html",
+    "dom",
+    "preprocessor",
+    "pagination",
+    "webflow",
+    "converter",
+    "offline"
+  ],
+  "author": "Adam Twardoch <adam@twardoch.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vexyart/vexy-dexyjs.git"
+  },
+  "homepage": "https://github.com/vexyart/vexy-dexyjs#readme",
+  "bugs": {
+    "url": "https://github.com/vexyart/vexy-dexyjs/issues"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.0"
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<!-- this_file: extension/popup.html -->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font: 13px/1.4 system-ui, sans-serif; width: 220px; margin: 12px; }
+      label { display: block; margin-bottom: 8px; }
+      select, button { width: 100%; padding: 6px; box-sizing: border-box; }
+      button { margin-top: 8px; cursor: pointer; }
+      #status { margin-top: 8px; color: #555; min-height: 1.4em; }
+    </style>
+  </head>
+  <body>
+    <label>
+      Framework
+      <select id="framework">
+        <option value="generic">generic</option>
+        <option value="webflow">webflow</option>
+        <option value="framer">framer</option>
+        <option value="mkdocs-material">mkdocs-material</option>
+        <option value="docusaurus">docusaurus</option>
+        <option value="bubble">bubble</option>
+      </select>
+    </label>
+    <button id="run">Convert to slides</button>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
