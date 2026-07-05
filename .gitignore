@@ -144,3 +144,12 @@ vite.config.ts.timestamp-*
 
 # Generated extension bundle (built from src by npm run build:ext)
 extension/vexy-dexyjs.global.min.js
+
+# macOS
+.DS_Store
+
+# CodeGraph index
+.codegraph/
+
+# oh-my-claudecode operational state
+.omc/

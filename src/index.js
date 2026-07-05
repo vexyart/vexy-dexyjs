@@ -1,5 +1,16 @@
 // this_file: vexy-dexyjs/src/index.js
 
+/**
+ * Scan raw CSS text into a `class -> background-color` map.
+ *
+ * Walks the stylesheet by brace depth (so nested at-rules like `@media` are
+ * flattened, not misread), and for each rule records the background color of
+ * the last class in the selector. Ties and higher-specificity selectors
+ * (`#id.foo`) win, so the color that would actually paint is the one kept.
+ *
+ * @param {string} cssContent Raw CSS source (contents of a `<style>` or stylesheet).
+ * @returns {Record<string, string>} Map of class name to CSS color string.
+ */
 export function parseCssBackgroundColors(cssContent) {
   const classColors = {};
   
@@ -88,6 +99,13 @@ export function parseCssBackgroundColors(cssContent) {
   return classColors;
 }
 
+/**
+ * Relative luminance (0..1) of a CSS color. Accepts `#rgb`, `#rrggbb`, and
+ * `rgb()/rgba()`; anything unparseable falls back to white (1.0).
+ *
+ * @param {string | null | undefined} color CSS color string.
+ * @returns {number} Perceptual luminance, 0 (black) to 1 (white).
+ */
 export function luminance(color) {
   color = (color || "").trim().toLowerCase();
   let r = 255, g = 255, b = 255;
@@ -119,6 +137,13 @@ export function luminance(color) {
   return 0.2126 * rf + 0.7152 * gf + 0.0722 * bf;
 }
 
+/**
+ * Pick the slide background class for a color. Transparent, missing, or
+ * inherited colors are treated as light; otherwise luminance decides.
+ *
+ * @param {string | null | undefined} color CSS color string.
+ * @returns {"slide-light-bg" | "slide-dark-bg"} The background class.
+ */
 export function getBgClass(color) {
   if (!color || ['transparent', 'rgba(0, 0, 0, 0)', 'rgba(0,0,0,0)', 'initial', 'inherit'].includes(color)) {
     return "slide-light-bg";
@@ -126,6 +151,14 @@ export function getBgClass(color) {
   return luminance(color) >= 0.5 ? "slide-light-bg" : "slide-dark-bg";
 }
 
+/**
+ * Resolve a section's background color from its class list. Later classes win,
+ * mirroring how the last-declared background paints in the browser.
+ *
+ * @param {string[]} classes The element's class names, in source order.
+ * @param {Record<string, string>} classColors Map from {@link parseCssBackgroundColors}.
+ * @returns {string | null} The resolved color, or null if none of the classes carry one.
+ */
 export function getSectionBgColor(classes, classColors) {
   for (let i = classes.length - 1; i >= 0; i--) {
     const cls = classes[i];
@@ -137,6 +170,16 @@ export function getSectionBgColor(classes, classColors) {
   return null;
 }
 
+/**
+ * Move a parent's content children into a new `<div class=wrapperClass>`, while
+ * leaving `<script>`/`<style>` and known media wrappers (`mask`, `video-wrap`,
+ * `hover-video`) untouched in place. Used to give slide text a single, styleable
+ * container without disturbing background media.
+ *
+ * @param {Element} parent Element whose children get wrapped.
+ * @param {string} wrapperClass Class applied to the inserted wrapper div.
+ * @returns {void} Mutates `parent` in place.
+ */
 export function wrapContentsInDiv(parent, wrapperClass) {
   const doc = parent.ownerDocument;
   const wrapper = doc.createElement('div');
@@ -167,6 +210,17 @@ export function wrapContentsInDiv(parent, wrapperClass) {
   }
 }
 
+/**
+ * Rewrite one section into the shared slide vocabulary. Tags the section
+ * `slide` plus a background class, then detects its shape — a badge/card, a
+ * two-column split, a multi-column row, or a single text/image block — and
+ * applies `slide-split-layout`, `slide-column`, `slide-text-container`,
+ * `slide-image-cover`, `slide-image-container`, and `slide-badge` accordingly.
+ *
+ * @param {Element} sec The section element to normalize (mutated in place).
+ * @param {Record<string, string>} classColors Map from {@link parseCssBackgroundColors}.
+ * @returns {void}
+ */
 export function normalizeSlideDom(sec, classColors) {
   sec.classList.add('slide');
   
@@ -312,6 +366,13 @@ export function normalizeSlideDom(sec, classColors) {
   }
 }
 
+/**
+ * Heuristic: is this element page chrome rather than slide content? Matches
+ * nav/menu/footer/header/banner/sidebar/search by tag, id, or class token.
+ *
+ * @param {Element} el Element to test.
+ * @returns {boolean} True if the element looks like page chrome.
+ */
 export function isChromeElement(el) {
   const classes = Array.from(el.classList).join(' ').toLowerCase();
   const id = (el.id || '').toLowerCase();
@@ -321,6 +382,14 @@ export function isChromeElement(el) {
   return keywords.some(k => classes.includes(k) || id.includes(k) || tag === k);
 }
 
+/**
+ * Return `el` unchanged if it is already a `<section>`, else a `<section>` that
+ * adopts its attributes and children. Lets downstream code assume every slide
+ * is a real section without discarding the source element's markup.
+ *
+ * @param {Element} el Candidate slide element.
+ * @returns {Element} A `<section>` (possibly `el` itself).
+ */
 export function ensureSectionTag(el) {
   if (el.tagName.toLowerCase() === 'section') {
     return el;
@@ -336,7 +405,27 @@ export function ensureSectionTag(el) {
   return sec;
 }
 
-export function preprocess(config) {
+/**
+ * Rewrite the current `document` in place into a flat list of
+ * `<section class="slide">` elements with the shared layout vocabulary, then
+ * return the serialized result. Runs in a browser/DOM context (page script,
+ * content script, or `page.evaluate`).
+ *
+ * The pipeline: resolve `class -> background-color` from live and inline
+ * stylesheets, drop framework chrome, pick or build sections (top-level blocks
+ * on Webflow/Framer; a heading/`breaks`-driven split elsewhere), normalize each
+ * via {@link normalizeSlideDom}, and replace the body with the new sections
+ * while preserving `<link>`/`<style>` so rendering stays intact.
+ *
+ * @param {object} [config] Options.
+ * @param {("generic"|"webflow"|"framer"|"mkdocs-material"|"docusaurus"|"bubble"|string)} [config.framework="generic"]
+ *   Framework hint that selects chrome-removal and section rules. `"generic"` works on any page.
+ * @param {number} [config.stageWidth=1920] Target stage width in px (reserved for downstream layout).
+ * @param {number} [config.stageHeight=1080] Target stage height in px (reserved for downstream layout).
+ * @param {{y: number}[]} [config.breaks=[]] Optional pagination breaks (y-offsets in px) to snap slide boundaries to.
+ * @returns {{html: string}} The rewritten document serialized as HTML.
+ */
+export function preprocess(config = {}) {
   const framework = config.framework || "generic";
   const stageWidth = config.stageWidth || 1920;
   const stageHeight = config.stageHeight || 1080;

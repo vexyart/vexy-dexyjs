@@ -30,6 +30,7 @@
     "build:py": "esbuild src/index.js --bundle --minify --format=iife --global-name=VexyDexy --outfile=../vexy-dexypy/src/vexy_dexypy/assets/vexy-dexyjs.js",
     "build:ext": "esbuild src/index.js --bundle --minify --format=iife --global-name=VexyDexy --outfile=extension/vexy-dexyjs.global.min.js",
     "build": "npm run build:esm && npm run build:cjs && npm run build:iife && npm run build:cdn && npm run build:py && npm run build:ext",
+    "test:unit": "vitest run",
     "test": "node test/smoke.mjs",
     "prepublishOnly": "npm run build"
   },
@@ -56,6 +57,7 @@
     "url": "https://github.com/vexyart/vexy-dexyjs/issues"
   },
   "devDependencies": {
-    "esbuild": "^0.20.0"
+    "esbuild": "^0.20.0",
+    "vitest": "^2.1.0"
   }
 }

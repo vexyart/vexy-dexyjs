@@ -15,6 +15,8 @@ MkDocs Material, Docusaurus, Bubble, or plain generic HTML.
 It runs where the page already lives — the browser — so fonts, CSS, and assets
 stay loaded and rendered rather than being downloaded and rewired offline.
 
+![A web page unspooling and pleating into a fan of slides](docs/assets/icon.png)
+
 ## Install
 
 ```bash
@@ -62,6 +64,24 @@ browser via `page.evaluate`).
 
 The output is framework-neutral — *not* reveal.js-shaped — so the same DOM can
 feed reveal.js, impress.js, or CSS paged media downstream.
+
+## Frameworks
+
+The `framework` hint tells the preprocessor which chrome to strip and where the
+slide content lives. `generic` is the safe default and works on any page.
+
+| `framework`       | Strips                                                        | Slides from                                       |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------------- |
+| `generic`         | nav / header / footer / sidebar / search chrome              | Heading (`h1`/`h2`) or `breaks`-driven block split |
+| `webflow`         | `.w-webflow-badge` and chrome                                | Top-level content sections, else `section` blocks |
+| `framer`          | chrome                                                        | Top-level content sections, else `[data-framer-name]` |
+| `mkdocs-material` | `.md-header` / `.md-sidebar` / `.md-footer` / `.md-nav` / `.md-search` | `article.md-content__inner`, heading split |
+| `docusaurus`      | `.navbar` / `.theme-doc-sidebar-container` / `footer`        | `.theme-doc-markdown`, heading split              |
+| `bubble`          | rewrites `position: absolute` to `relative`                  | Heading / `breaks` block split                    |
+
+Every framework then runs the same normalization pass — background-color
+resolution, split/column detection, and light/dark tagging — so downstream
+renderers see one consistent slide vocabulary regardless of the source.
 
 ## Consumers
 
