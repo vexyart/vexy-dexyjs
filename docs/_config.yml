@@ -1,8 +1,0 @@
-# this_file: docs/_config.yml
-title: vexy-dexyjs
-description: Turn any web page into reveal.js-compatible slides — in the browser.
-remote_theme: just-the-docs/just-the-docs
-color_scheme: light
-aux_links:
-  vexy-dexyjs on GitHub:
-    - https://github.com/vexyart/vexy-dexyjs

@@ -2,6 +2,8 @@
 
 # vexy-dexyjs
 
+**Documentation:** https://vexy.dev/vexy-dexyjs/
+
 Turn **any** web page into reveal.js-compatible slides — in the browser.
 
 `vexy-dexyjs` is a small, dependency-free DOM preprocessor. Pointed at a live
@@ -15,7 +17,7 @@ MkDocs Material, Docusaurus, Bubble, or plain generic HTML.
 It runs where the page already lives — the browser — so fonts, CSS, and assets
 stay loaded and rendered rather than being downloaded and rewired offline.
 
-![A web page unspooling and pleating into a fan of slides](docs/assets/icon.png)
+![A web page unspooling and pleating into a fan of slides](src_docs/md/assets/icon.png)
 
 ## Install
 
@@ -92,6 +94,10 @@ renderers see one consistent slide vocabulary regardless of the source.
 - **Any tool** — `import` it, or drop the CDN `<script>` tag in a page.
 
 ## Build
+
+The documentation site is built from `src_docs/md/` into `docs/` with
+`src_docs/build.sh` (or `./build.sh docs`).
+
 
 ```bash
 npm run build

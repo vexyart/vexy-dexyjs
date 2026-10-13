@@ -153,3 +153,13 @@ extension/vexy-dexyjs.global.min.js
 
 # oh-my-claudecode operational state
 .omc/
+
+# Python / docs tooling artifacts
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+site/
+build/
+target/
