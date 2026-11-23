@@ -1,4 +1,4 @@
-# vexy-dexyjs
+# vexy-dexyjs {data-toc-label="DexyJS"}
 
 `vexy-dexyjs` turns a web page into slides, in the browser.
 

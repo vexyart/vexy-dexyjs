@@ -95,9 +95,9 @@ renderers see one consistent slide vocabulary regardless of the source.
 
 ## Build
 
-The documentation site is built from `src_docs/md/` into `docs/` with
-`src_docs/build.sh` (or `./build.sh docs`).
-
+Run `./build.sh docs` for a strict build from `src_docs/md/` into `docs/`.
+The script uses `uvx` with Python 3.13, ProperDocs and the fly-january 0.1.1
+theme. The site uses the native header and footer (`extra.fly.chrome: none`).
 
 ```bash
 npm run build

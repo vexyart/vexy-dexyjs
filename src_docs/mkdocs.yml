@@ -1,15 +1,15 @@
 # this_file: src_docs/mkdocs.yml
-site_name: vexy-dexyjs
+site_name: DexyJS
 site_description: Browser DOM preprocessor that converts any web page into reveal.js-compatible slides.
 site_url: https://vexy.dev/vexy-dexyjs/
 repo_url: https://github.com/vexyart/vexy-dexyjs
-repo_name: vexyart/vexy-dexyjs
+repo_name: GitHub
 edit_uri: edit/main/src_docs/md/
 docs_dir: md
 site_dir: ../docs
 use_directory_urls: true
 theme:
-  name: materialx
+  name: fly-january
   features:
     - navigation.sections
     - navigation.top
@@ -20,12 +20,8 @@ theme:
     - content.code.annotate
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
       toggle: {icon: material/brightness-7, name: Switch to dark mode}
     - scheme: slate
-      primary: indigo
-      accent: indigo
       toggle: {icon: material/brightness-4, name: Switch to light mode}
 markdown_extensions:
   - abbr
@@ -45,7 +41,12 @@ markdown_extensions:
   - pymdownx.tabbed: {alternate_style: true}
   - pymdownx.tasklist: {custom_checkbox: true}
 plugins:
+  - fly
   - search
+extra:
+  fly:
+    chrome: none
+    hue: indigo
 nav:
   - Home: index.md
   - Installation: installation.md

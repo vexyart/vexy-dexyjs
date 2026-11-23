@@ -6,6 +6,12 @@ All notable changes to `vexy-dexyjs` are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project uses git-tag
 semver (`vX.Y.Z`).
 
+## [Unreleased]
+
+### Changed
+
+- Site now uses the fly-january 0.1.1 theme (chrome: none).
+
 ## [1.0.0] — 2026-07-05
 
 First tagged release. The package was already built and documented; this pass

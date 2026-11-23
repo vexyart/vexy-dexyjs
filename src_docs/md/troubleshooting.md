@@ -80,7 +80,7 @@ A page's Content Security Policy can forbid scripts from a CDN. Use the
 [Chrome extension](extension.md), which injects the bundle from the
 extension, or a headless browser with `page.addScriptTag()`.
 
-## `npm install vexy-dexyjs` returns 404
+## `npm install vexy-dexyjs` returns 404 {data-toc-label="npm install returns 404"}
 
 The package has not been published to npm. Build it from source as described
 in [Installation](installation.md#from-source).
