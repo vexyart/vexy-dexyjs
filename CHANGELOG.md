@@ -10,7 +10,7 @@ semver (`vX.Y.Z`).
 
 ### Changed
 
-- Site now uses the fly-january 0.1.1 theme (chrome: none).
+- Site now uses the fly-january 0.2.1 theme (chrome: none).
 
 ## [1.0.0] — 2026-07-05
 

@@ -96,7 +96,7 @@ renderers see one consistent slide vocabulary regardless of the source.
 ## Build
 
 Run `./build.sh docs` for a strict build from `src_docs/md/` into `docs/`.
-The script uses `uvx` with Python 3.13, ProperDocs and the fly-january 0.1.1
+The script uses `uvx` with Python 3.13, ProperDocs and the fly-january 0.2.1
 theme. The site uses the native header and footer (`extra.fly.chrome: none`).
 
 ```bash
