@@ -77,7 +77,7 @@ Node 18, 20 and 22 it runs `npm ci`, `npm run build`, `npm run test:unit` and
 
 ## Build the documentation
 
-The site uses ProperDocs with fly-january 0.3.0 or later and native header
+The site uses ProperDocs with fly-january 0.4.0 or later (remote theme assets) and native header
 and footer (`extra.fly.chrome: none`). Install [`uv`](https://docs.astral.sh/uv/).
 The build script uses `uvx` to run the documentation tools with Python 3.13.
 
