@@ -10,6 +10,7 @@ semver (`vX.Y.Z`).
 
 ### Changed
 
+- Documentation builds now accept fly-january 0.3.0 or later.
 - Site now uses the fly-january 0.2.1 theme (chrome: none).
 
 ## [1.0.0] — 2026-07-05
